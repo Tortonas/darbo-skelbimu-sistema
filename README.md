@@ -1,3 +1,0 @@
-# Darbo skelbimų sistema
-
-Soon
