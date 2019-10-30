@@ -54,11 +54,22 @@
 
   <!-- Page Content -->
   <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <h1 class="mt-5">Darbo paieškos pasiūlos per internetą sistemą</h1>
-        <p class="lead">Čia galite ieškotis darbo skelbimų bei juos skelbti, nemokamai!</p>
-      </div>
+      <div class="main-content--small-margin">
+        <form method="POST">
+          <div class="form-group">
+              <label for="inputEmail">Naudotojo vardas</label>
+              <input type="email" class="form-control" id="inputEmail" placeholder="Naudotojo vardas">
+          </div>
+          <div class="form-group">
+              <label for="inputPassword">Slaptažodis</label>
+              <input type="password" class="form-control" id="inputPassword" placeholder="Slaptažodis">
+          </div>
+          <div class="form-group">
+              <label for="inputPassword">Pakartokite slaptažodį</label>
+              <input type="password" class="form-control" id="inputPassword" placeholder="Pakartokite slaptažodį">
+          </div>
+          <button type="submit" class="btn btn-primary">Registruotis</button>
+      </form>
     </div>
   </div>
 
