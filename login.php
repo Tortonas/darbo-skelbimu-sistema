@@ -1,3 +1,12 @@
+<?php
+session_start();
+foreach (glob("src/*.php") as $filename)
+{
+    include $filename;
+}
+$controller = new Controller();
+$view = new View();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,38 +28,9 @@
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">Darbo skelbimai</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Namai
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="ads.html">Skelbimai</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="register.html">Registruotis</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="login.html">Prisijungti</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="myads.html">Mano skelbimai</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="logout.php">Atsijungti</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php
+  $controller->printNavBar("login.php");
+  ?>
 
   <!-- Page Content -->
   <div class="container">
