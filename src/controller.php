@@ -150,4 +150,40 @@ class Controller {
             return true;
         }
     }
+
+    public function canIShowUsersPage()
+    {
+        if($_SESSION['role'] == 3)
+        {
+            return true;
+        }
+        else
+        {
+            $this->redirect_to_another_page("index.php", 0);
+            return false;
+        }
+    }
+
+    public function printUsersPage()
+    {
+        $userList = $this->model->getUserList();
+        $this->view->printUsersPage($userList);
+        $this->view->printUsersPageDeleteForm();
+    }
+
+    public function handleUsersPageButton()
+    {
+        if(isset($_POST['verify_btn']))
+        {
+            if($this->model->changeUserVerification($_POST['username']))
+            {
+                $this->view->printSuccess("Pakeista!");
+                $this->redirect_to_another_page("users.php", 1);
+            }
+            else
+            {
+                $this->view->printDanger("Naudotojas nerastas!");
+            }
+        }
+    }
 }

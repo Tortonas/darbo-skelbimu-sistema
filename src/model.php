@@ -55,16 +55,14 @@ class Model {
                     }
                     else
                     {
-                        //$this->logoutMe();
-                        echo "LOGOUTINKIT MANE";
+                        $this->logoutMe();
                         return false;
                     }
                 }
             }
             else
             {
-                //$this->logoutMe();
-                echo "LOGOUTINKIT MANE";
+                $this->logoutMe();
             }
         }
     }
@@ -165,6 +163,43 @@ class Model {
         $_SESSION['last_name'] = "0";
         $_SESSION['role'] = "0";
         $_SESSION['verified'] = "0";
+    }
+
+    public function getUserList()
+    {
+        $sql = "SELECT * FROM users WHERE role=1";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function changeUserVerification($username)
+    {
+        $username = $this->secureInput($username);
+        $sql = "SELECT * FROM users WHERE username='$username'";
+        $result = $this->conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            while($row = $result->fetch_assoc())
+            {
+                if($row['verified'] == 0)
+                {
+                    $sqlUpdate = "UPDATE users SET verified='1' WHERE username='$username'";
+                    $this->conn->query($sqlUpdate);
+                }
+                else
+                {
+                    $sqlUpdate = "UPDATE users SET verified='0' WHERE username='$username'";
+                    $this->conn->query($sqlUpdate);
+                }
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

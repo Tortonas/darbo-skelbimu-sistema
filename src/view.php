@@ -118,4 +118,45 @@ class View {
     {
         echo '<div class="alert alert-danger" role="alert">'.$text.'</div>';
     }
+
+    function printUsersPage($array)
+    {
+        echo '        <div class="main-content--small-margin">
+            <h1>Naudotojų sąrašas:</h1>
+            <ul class="list-group">';
+
+        if ($array->num_rows > 0)
+        {
+            // output data of each row
+            while($row = $array->fetch_assoc())
+            {
+                if($row['verified'] == "0")
+                {
+                    echo '<li class="list-group-item d-flex justify-content-between align-items-center">'.$row['username'].'<span class="badge badge-danger badge-pill">Nepatvirtintas</span></li>';
+                }
+                else
+                {
+                    echo '<li class="list-group-item d-flex justify-content-between align-items-center">'.$row['username'].'<span class="badge badge-primary badge-pill">Patvirtintas</span></li>';
+                }
+            }
+        }
+        else
+        {
+            $this->printSuccess("Sistemoje nėra paprasto tipo naudotojų!");
+        }
+        echo '</ul>
+        </div>';
+    }
+
+    function printUsersPageDeleteForm()
+    {
+        echo '
+        <form method="POST" class="main-content--small-margin">
+          <div class="form-group">
+              <label for="inputEmail">Įveskite naudotojo vardą statusą norite pakeisti.</label>
+              <input type="text" class="form-control" id="inputEmail" name="username" placeholder="Naudotojo vardas">
+          </div>
+          <button type="submit" name="verify_btn" class="btn btn-primary">Pakeisti</button>
+      </form>';
+    }
 }
