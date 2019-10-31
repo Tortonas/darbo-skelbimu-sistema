@@ -212,4 +212,52 @@ class View {
       </div>';
 
     }
+
+    function printSubmitNewAdButton($isActiveButton)
+    {
+        if($isActiveButton)
+        {
+            echo '<a href="createad.php"> <button type="submit" class="btn btn-primary main-content--small-margin">Sukurti naują skelbimą</button> </a>';
+        }
+        else
+        {
+            echo ' <button type="submit" class="btn btn-primary main-content--small-margin disabled">Sukurti naują skelbimą</button> <h5 style="color:red">Kaip administratorius patvirtins jūsų paskyrą, galėsite kelti skelbimus.</h5>';
+        }
+    }
+
+    function printCreateNewAdForm()
+    {
+        //title, short description, text, salary, validtill, type
+
+        echo '<form method="POST" class="main-content--small-margin">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Vardas pavardė arba firmos pavadinimas</label>
+                <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Petras Petraitis arba UAB `UAB` ">
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">Skelbimo tipas</label>
+                <select name="type" class="form-control" id="exampleFormControlSelect1">
+                  <option value="1">Ieškau darbo</option>
+                  <option value="2">Siūlau darbą</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Trumpas pristatymas</label>
+                <input name="description" type="text" class="form-control" id="exampleFormControlInput1" placeholder="UAB `UAB` ieško darbuotojų. ">
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Pilnas skelbimo tekstas</label>
+                <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Alga</label>
+                <input name="salary" type="text" class="form-control" id="exampleFormControlInput1" placeholder="555">
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Iki kada galios skelbimas</label>
+                <input name="valid_till" type="text" class="form-control" id="exampleFormControlInput1" placeholder="2019-12-01">
+              </div>
+              <button type="submit" name="createad_btn" class="btn btn-primary">Sukurti naują skelbimą</button>
+            </form>';
+    }
 }

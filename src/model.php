@@ -220,4 +220,17 @@ class Model {
         return $result;
     }
 
+    public function createNewAd($title, $type, $description, $text, $salary, $valid_till, $user_id)
+    {
+        $title = $this->secureInput($title);
+        $type = $this->secureInput($type);
+        $description = $this->secureInput($description);
+        $text = $this->secureInput($text);
+        $salary = $this->secureInput($salary);
+        $valid_till = $this->secureInput($valid_till);
+
+        $sql = "INSERT INTO ads (title, type, description, text, salary, valid_till, fk_user) VALUES ('$title', '$type', '$description', '$text', '$salary', '$valid_till', '$user_id')";
+        return $this->conn->query($sql);
+    }
+
 }

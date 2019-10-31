@@ -200,11 +200,68 @@ class Controller {
         }
     }
 
+    public function canISeeCreateAdWebPage()
+    {
+        if($_SESSION['verified'] == "0")
+        {
+            $this->redirect_to_another_page("index.php", 0);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     public function printMyAdsContent()
     {
         $searchingJobList = $this->model->getSearchJobList($_SESSION['id']);
         $givingJobList = $this->model->getGivingJobList($_SESSION['id']);
 
+        if($_SESSION['verified'] == 1)
+        {
+            $this->view->printSubmitNewAdButton(true);
+        }
+        else
+        {
+            $this->view->printSubmitNewAdButton(false);
+        }
         $this->view->printMyAdsContent($searchingJobList, $givingJobList);
+    }
+
+    public function printCreateNewAdForm()
+    {
+        $this->view->printCreateNewAdForm();
+    }
+
+    public function handleCreateNewAdButton()
+    {
+        if(isset($_POST['createad_btn']))
+        {
+            $canICreateNewAd = true;
+
+            if(empty($_POST['title'])  || empty($_POST['description']) || empty($_POST['text']) || empty($_POST['salary']) || empty($_POST['valid_till']))
+            {
+                $canICreateNewAd = false;
+            }
+
+            if($canICreateNewAd)
+            {
+                if($this->model->createNewAd($_POST['title'], $_POST['type'], $_POST['description'], $_POST['text'], $_POST['salary'] , $_POST['valid_till'], $_SESSION['id']))
+                {
+                    $this->view->printSuccess("Skelbimas sėkmingai įkeltas!");
+                    $this->redirect_to_another_page("myads.php", 2);
+                }
+                else
+                {
+                    $this->view->printDanger("Formų tipai neatitinka!");
+                }
+            }
+            else
+            {
+                $this->view->printDanger("Yra formos klaidų!");
+            }
+
+        }
     }
 }
