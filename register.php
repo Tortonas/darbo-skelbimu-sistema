@@ -36,8 +36,12 @@ $view = new View();
   <div class="container">
 
       <?php
-      $controller->printRegisterForm();
-      $controller->handleRegisterButton();
+      if($controller->canIShowRegisterPage())
+      {
+          $controller->printRegisterForm();
+          $controller->handleRegisterButton();
+      }
+
       ?>
   </div>
 

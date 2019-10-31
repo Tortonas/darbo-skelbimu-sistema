@@ -118,4 +118,36 @@ class Controller {
             }
         }
     }
+
+    public function canIShowLoginPage()
+    {
+        if($this->amILoggedIn())
+        {
+            $this->redirect_to_another_page("index.php", 0);
+            return false;
+        }
+        return true;
+    }
+
+    public function canIShowRegisterPage()
+    {
+        if($this->amILoggedIn())
+        {
+            $this->redirect_to_another_page("index.php", 0);
+            return false;
+        }
+        return true;
+    }
+
+    public function amILoggedIn()
+    {
+        if($_SESSION['id'] == "0")
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 }

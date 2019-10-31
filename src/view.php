@@ -25,6 +25,10 @@ class View {
                 }
                 else
                 {
+                    if($_SESSION['role'] == 3)
+                    {
+                        $this->printNavbarItem("Narių sąrašas", "users.php", $location);
+                    }
                     $this->printNavbarItem("Mano skelbimai", "myads.php", $location);
                     $this->printNavbarItem("Atsijungti", "logout.php", $location);
                 }

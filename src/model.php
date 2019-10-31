@@ -9,7 +9,6 @@ class Model {
 
     function __construct()
     {
-
         $this->setDefaultSessions();
         date_default_timezone_set("Europe/Vilnius");
         $dbConfigFile = fopen("./src/database.config", "r") or die("Unable to open file!");
@@ -24,6 +23,49 @@ class Model {
         // Check connection
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
+        }
+        $this->updateLoginStatus();
+    }
+
+    public function updateLoginStatus()
+    {
+        if($_SESSION['id'] != "0")
+        {
+            $username = $this->secureInput($_SESSION['username']);
+            $password = $this->secureInput($_SESSION['password']);
+
+            $sql = "SELECT * FROM users WHERE username='$username'";
+            $result = $this->conn->query($sql);
+
+            if ($result->num_rows > 0)
+            {
+                while($row = $result->fetch_assoc())
+                {
+                    if($password == $row['password'])
+                    {
+                        $_SESSION['id'] = $row['id'];
+                        $_SESSION['username'] = $row['username'];
+                        $_SESSION['email'] = $row['email'];
+                        $_SESSION['password'] = $row['password'];
+                        $_SESSION['first_name'] = $row['first_name'];
+                        $_SESSION['last_name'] = $row['last_name'];
+                        $_SESSION['role'] = $row['role'];
+                        $_SESSION['verified'] = $row['verified'];
+                        return true;
+                    }
+                    else
+                    {
+                        //$this->logoutMe();
+                        echo "LOGOUTINKIT MANE";
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                //$this->logoutMe();
+                echo "LOGOUTINKIT MANE";
+            }
         }
     }
 

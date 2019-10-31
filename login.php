@@ -36,11 +36,11 @@ $view = new View();
   <div class="container">
 
       <?php
-        $controller->printLoginForm();
-        $controller->handleLoginButton();
-
-
-        echo $_SESSION['id'];
+        if($controller->canIShowLoginPage())
+        {
+            $controller->printLoginForm();
+            $controller->handleLoginButton();
+        }
       ?>
   </div>
 
