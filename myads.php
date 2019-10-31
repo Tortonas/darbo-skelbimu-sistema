@@ -34,48 +34,15 @@ $view = new View();
 
   <!-- Page Content -->
   <div class="container">
-    <div class="main-content--small-margin">
-      <div class="list-group">
-          <h1>"Ieškau darbo" - skelbimai</h1>
-          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">Petras Petriukas</h5>
-              <small>Liko 27 dienos</small>
-            </div>
-            <p class="mb-1">Esu C# programuotojas. Ieškau praktikos.</p>
-            <small>Alga 500 eurų</small>
-          </a>
-          </a>
-      
-        <div class="list-group">
-            <h1>"Siūlau darbą" - skelbimai</h1>
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Hostinger</h5>
-                <small>Liko 27 dienos</small>
-              </div>
-              <p class="mb-1">Firma Hostinger ieško Customer Success Agent pozicijos darbuotojų</p>
-              <small>Alga 500 eurų</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Devbridge</h5>
-                <small>Liko 27 dienos</small>
-              </div>
-              <p class="mb-1">Firma Hostinger ieško Java programuotojo pozicijos darbuotojo</p>
-              <small>Alga 3000 eurų</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Valymas24</h5>
-                <small>Liko 27 dienos</small>
-              </div>
-              <p class="mb-1">Firma Valymas ieško valytojų.</p>
-              <small>Alga 700 eurų</small>
-            </a>
-          </div>
-        </div>
-      </div>
+
+      <?php
+      if($controller->canISeeMyAdsPage())
+      {
+          $controller->printMyAdsContent();
+      }
+      ?>
+
+
   </div>
 
   <!-- Bootstrap core JavaScript -->

@@ -202,4 +202,22 @@ class Model {
         }
     }
 
+    public function getSearchJobList($id)
+    {
+        $id = $this->secureInput($id);
+        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='1'";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function getGivingJobList($id)
+    {
+        $id = $this->secureInput($id);
+        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='2'";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
 }

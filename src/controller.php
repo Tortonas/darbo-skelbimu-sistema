@@ -186,4 +186,25 @@ class Controller {
             }
         }
     }
+
+    public function canISeeMyAdsPage()
+    {
+        if($_SESSION['id'] == "0")
+        {
+            $this->redirect_to_another_page("index.php", 0);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public function printMyAdsContent()
+    {
+        $searchingJobList = $this->model->getSearchJobList($_SESSION['id']);
+        $givingJobList = $this->model->getGivingJobList($_SESSION['id']);
+
+        $this->view->printMyAdsContent($searchingJobList, $givingJobList);
+    }
 }
