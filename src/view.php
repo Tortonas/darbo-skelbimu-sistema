@@ -260,4 +260,86 @@ class View {
               <button type="submit" name="createad_btn" class="btn btn-primary">Sukurti naują skelbimą</button>
             </form>';
     }
+
+    function printGlobalAdsContent($searchJobArr, $giveJobArr)
+    {
+        echo '      <div class="main-content--small-margin">
+      <div class="list-group">
+          <h1>"Ieškau darbo" - skelbimai</h1>';
+
+        if ($searchJobArr->num_rows > 0)
+        {
+            while($row = $searchJobArr->fetch_assoc())
+            {
+                echo '          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">';
+
+                if($_SESSION['role'] >= 2)
+                {
+                    echo '<h5 class="mb-1">'.$row['title'].' (id: '.$row['id'].')</h5>';
+                }
+                else
+                {
+                    echo '<h5 class="mb-1">'.$row['title'].'</h5>';
+                }
+
+            echo '<small>Galioja iki '.$row['valid_till'].'</small>
+            </div>
+            <p class="mb-1">'.$row['description'].'</p>
+            <small>Alga '.$row['salary'].' eurų</small>
+          </a>';
+            }
+        }
+        else
+        {
+            echo "<h5>Nėra tokio tipo skelbimų.</h5>";
+        }
+
+        echo '<div class="list-group">
+            <h1>"Siūlau darbą" - skelbimai</h1>';
+
+        if ($giveJobArr->num_rows > 0)
+        {
+            while($row = $giveJobArr->fetch_assoc())
+            {
+                echo '          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">';
+
+                if($_SESSION['role'] >= 2)
+                {
+                    echo '<h5 class="mb-1">'.$row['title'].' (id: '.$row['id'].')</h5>';
+                }
+                else
+                {
+                    echo '<h5 class="mb-1">'.$row['title'].'</h5>';
+                }
+
+                echo '<small>Galioja iki '.$row['valid_till'].'</small>
+            </div>
+            <p class="mb-1">'.$row['description'].'</p>
+            <small>Alga '.$row['salary'].' eurų</small>
+          </a>';
+            }
+        }
+        else
+        {
+            echo "<h5>Nėra tokio tipo skelbimų.</h5>";
+        }
+
+        echo  '</div>
+        </div>
+      </div>';
+    }
+
+    function printGlobalAdsRemoveForm()
+    {
+        echo '
+        <form method="POST" class="main-content--small-margin">
+          <div class="form-group">
+              <label for="inputEmail">Įveskite skelbimo ID kurį norite ištrinti.</label>
+              <input type="text" class="form-control" id="inputEmail" name="ad_id" placeholder="Skelbimo ID">
+          </div>
+          <button type="submit" name="delete_btn" class="btn btn-danger">Ištrinti</button>
+      </form>';
+    }
 }

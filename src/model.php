@@ -205,7 +205,7 @@ class Model {
     public function getSearchJobList($id)
     {
         $id = $this->secureInput($id);
-        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='1'";
+        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='1' AND hidden='0'";
         $result = $this->conn->query($sql);
 
         return $result;
@@ -214,7 +214,23 @@ class Model {
     public function getGivingJobList($id)
     {
         $id = $this->secureInput($id);
-        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='2'";
+        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='2' AND hidden='0'";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function getSearchJobListGlobal()
+    {
+        $sql = "SELECT * FROM ads WHERE type='1' AND hidden='0'";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
+    public function getGivingJobListGlobal()
+    {
+        $sql = "SELECT * FROM ads WHERE type='2' AND hidden='0'";
         $result = $this->conn->query($sql);
 
         return $result;
@@ -231,6 +247,13 @@ class Model {
 
         $sql = "INSERT INTO ads (title, type, description, text, salary, valid_till, fk_user) VALUES ('$title', '$type', '$description', '$text', '$salary', '$valid_till', '$user_id')";
         return $this->conn->query($sql);
+    }
+
+    public function hideAd($id)
+    {
+        $id = $this->secureInput($id);
+        $sql = "UPDATE ads SET hidden='1' WHERE id='$id'";
+        $this->conn->query($sql);
     }
 
 }

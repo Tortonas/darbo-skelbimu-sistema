@@ -264,4 +264,35 @@ class Controller {
 
         }
     }
+
+    public function printGlobalAdsContent()
+    {
+        $searchJobArr = $this->model->getSearchJobListGlobal();
+        $giveJobArr = $this->model->getGivingJobListGlobal();
+        $this->view->printGlobalAdsContent($searchJobArr, $giveJobArr);
+        if($_SESSION['role'] >= 2)
+        {
+            $this->view->printGlobalAdsRemoveForm();
+            if(isset($_POST['delete_btn']))
+            {
+                $canIDelete = true;
+
+                if(empty($_POST['ad_id']))
+                {
+                    $canIDelete = false;
+                }
+
+                if($canIDelete)
+                {
+                    $this->model->hideAd($_POST['ad_id']);
+                    $this->view->printSuccess("Jeigu ID egzistuoja, skelbimas ištrintas!");
+                    $this->redirect_to_another_page("ads.php", 1);
+                }
+                else
+                {
+                    $this->view->printDanger("Validacijos klaida!");
+                }
+            }
+        }
+    }
 }
