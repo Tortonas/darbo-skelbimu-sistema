@@ -88,6 +88,23 @@ class View {
         ';
     }
 
+    function printLoginForm()
+    {
+        echo '      <div class="main-content--small-margin">
+        <form method="POST">
+          <div class="form-group">
+              <label for="inputEmail">Naudotojo vardas</label>
+              <input type="text" class="form-control" id="inputEmail" name="username" placeholder="Naudotojo vardas">
+          </div>
+          <div class="form-group">
+              <label for="inputPassword">Slaptažodis</label>
+              <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Slaptažodis">
+          </div>
+          <button type="submit" name="login_btn" class="btn btn-primary">Prisijungti</button>
+      </form>
+    </div>';
+    }
+
     function printSuccess($text)
     {
         echo '<div class="alert alert-success" role="alert">'.$text.'</div>';

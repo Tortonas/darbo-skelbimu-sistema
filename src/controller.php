@@ -13,7 +13,7 @@ class Controller {
 
     public function logout()
     {
-        $this->model->setDefaultSessions();
+        $this->model->logoutMe();
     }
 
     public function printNavBar($location)
@@ -94,6 +94,27 @@ class Controller {
             else
             {
                 $this->view->printDanger("Registracija nesėkminga!");
+            }
+        }
+    }
+
+    public function printLoginForm()
+    {
+        $this->view->printLoginForm();
+    }
+
+    public function handleLoginButton()
+    {
+        if(isset($_POST['login_btn']))
+        {
+            if($this->model->loginMe($_POST['username'], $_POST['password']))
+            {
+                $this->view->printSuccess("Prisijungimas sėkmingas!");
+                $this->redirect_to_another_page("ads.php", 1);
+            }
+            else
+            {
+                $this->view->printDanger("Toks naudotojas su tokiu slapyvardžiu arba slaptažodžiu neegzistuoja!");
             }
         }
     }

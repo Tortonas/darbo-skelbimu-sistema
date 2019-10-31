@@ -81,4 +81,48 @@ class Model {
         mysqli_query($this->conn, $sql);
     }
 
+    public function loginMe($username, $password)
+    {
+        $username = $this->secureInput($username);
+        $password = $this->secureInput($password);
+
+        $sql = "SELECT * FROM users WHERE username='$username'";
+        $result = $this->conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            while($row = $result->fetch_assoc())
+            {
+                if(password_verify($password, $row['password']))
+                {
+                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['username'] = $row['username'];
+                    $_SESSION['email'] = $row['email'];
+                    $_SESSION['password'] = $row['password'];
+                    $_SESSION['first_name'] = $row['first_name'];
+                    $_SESSION['last_name'] = $row['last_name'];
+                    $_SESSION['role'] = $row['role'];
+                    $_SESSION['verified'] = $row['verified'];
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
+    public function logoutMe()
+    {
+        $_SESSION['id'] = "0";
+        $_SESSION['username'] = "0";
+        $_SESSION['email'] = "0";
+        $_SESSION['password'] = "0";
+        $_SESSION['first_name'] = "0";
+        $_SESSION['last_name'] = "0";
+        $_SESSION['role'] = "0";
+        $_SESSION['verified'] = "0";
+    }
+
 }

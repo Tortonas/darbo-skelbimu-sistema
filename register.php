@@ -46,7 +46,6 @@ $view = new View();
   <!-- Bootstrap core JavaScript -->
   <script src="includes/jquery/jquery.slim.min.js"></script>
   <script src="includes/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script>$('.toast').toast('show')</script>
 </body>
 
 </html>
