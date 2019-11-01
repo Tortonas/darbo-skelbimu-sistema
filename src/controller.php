@@ -304,31 +304,30 @@ class Controller {
             {
                 $adContentArr = $this->model->getAdContentById($_GET['id']);
                 $this->view->printOneAd($adContentArr);
+                $commentArr = $this->model->getCommentsById($_GET['id']);
+                $this->view->printAdComment($commentArr);
+                if($_SESSION['id'] != 0)
+                {
+                    $this->view->printAdCommentForm();
+                    if(isset($_POST['comment_btn']))
+                    {
+                        if(!empty($_POST['comment']))
+                        {
+                            $this->model->createNewAdComment($_POST['comment'], $_SESSION['id'], $_GET['id']);
+                            $this->view->printSuccess("Komentaras paskelbtas!");
+                            $this->redirect_to_another_page("viewad.php?id=".$_GET['id'],1);
+                        }
+                        else
+                        {
+                            $this->view->printDanger("Komenataro laukas tuščias!");
+                        }
+                    }
+                }
             }
             else
             {
                 $this->view->printDanger("Toks skelbimas su tokiu ID neegzistuoja. Būsite tuoj perkelti į pagrindinį skelbimų puslapį.");
                 $this->redirect_to_another_page("ads.php", 2);
-            }
-
-            $commentArr = $this->model->getCommentsById($_GET['id']);
-            $this->view->printAdComment($commentArr);
-            if($_SESSION['id'] != 0)
-            {
-                $this->view->printAdCommentForm();
-                if(isset($_POST['comment_btn']))
-                {
-                    if(!empty($_POST['comment']))
-                    {
-                        $this->model->createNewAdComment($_POST['comment'], $_SESSION['id'], $_GET['id']);
-                        $this->view->printSuccess("Komentaras paskelbtas!");
-                        $this->redirect_to_another_page("viewad.php?id=".$_GET['id'],1);
-                    }
-                    else
-                    {
-                        $this->view->printDanger("Komenataro laukas tuščias!");
-                    }
-                }
             }
         }
         else

@@ -299,4 +299,11 @@ class Model {
         $this->conn->query($sql);
     }
 
+    public function getCountOfAdVisits($adId)
+    {
+        $sql = "SELECT * FROM ad_views WHERE fk_ad='$adId'";
+        $result = $this->conn->query($sql);
+        return $result->num_rows;
+    }
+
 }

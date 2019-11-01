@@ -1,8 +1,9 @@
 <?php
 class View {
+    private $model;
     function __construct()
     {
-
+        $this->model = new Model();
     }
 
     public function printNavbar($location)
@@ -274,9 +275,10 @@ class View {
                 echo '          <a href="viewad.php?id='.$row['id'].'" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">';
 
+                $viewCount = $this->model->getCountOfAdVisits($row['id']);
                 if($_SESSION['role'] >= 2)
                 {
-                    echo '<h5 class="mb-1">'.$row['title'].' (id: '.$row['id'].')</h5>';
+                    echo '<h5 class="mb-1">'.$row['title'].' (id: '.$row['id'].') (Peržiūros: '.$viewCount.')</h5>';
                 }
                 else
                 {
@@ -302,12 +304,13 @@ class View {
         {
             while($row = $giveJobArr->fetch_assoc())
             {
+                $viewCount = $this->model->getCountOfAdVisits($row['id']);
                 echo '          <a href="viewad.php?id='.$row['id'].'" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">';
 
                 if($_SESSION['role'] >= 2)
                 {
-                    echo '<h5 class="mb-1">'.$row['title'].' (id: '.$row['id'].')</h5>';
+                    echo '<h5 class="mb-1">'.$row['title'].' (id: '.$row['id'].') (Peržiūros: '.$viewCount.')</h5>';
                 }
                 else
                 {
