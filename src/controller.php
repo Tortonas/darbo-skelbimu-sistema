@@ -302,6 +302,11 @@ class Controller {
         {
             if($this->model->checkIfAdExistsById($_GET['id']))
             {
+                if(!$this->model->haveIViewedThisAd($_SESSION['id'], $_GET['id']))
+                {
+                    $this->model->viewThisAd($_SESSION['id'], $_GET['id']);
+                }
+
                 $adContentArr = $this->model->getAdContentById($_GET['id']);
                 $this->view->printOneAd($adContentArr);
                 $commentArr = $this->model->getCommentsById($_GET['id']);

@@ -306,4 +306,26 @@ class Model {
         return $result->num_rows;
     }
 
+    public function haveIViewedThisAd($userId, $adId)
+    {
+        $userId = $this->secureInput($userId);
+        $adId = $this->secureInput($adId);
+        $sql = "SELECT * FROM ad_views WHERE fk_ad='$adId' AND fk_user='$userId'";
+        $result = $this->conn->query($sql);
+
+        if ($result->num_rows > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function viewThisAd($userId, $adId)
+    {
+        $sql = "INSERT INTO ad_views (fk_ad, fk_user) VALUES ('$adId', '$userId')";
+        $this->conn->query($sql);
+    }
 }
