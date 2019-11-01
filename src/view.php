@@ -170,7 +170,7 @@ class View {
         {
             while($row = $searchJobArr->fetch_assoc())
             {
-               echo '          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+               echo '          <a href="viewad.php?id='.$row['id'].'" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">'.$row['title'].'</h5>
               <small>Galioja iki '.$row['valid_till'].'</small>
@@ -192,7 +192,7 @@ class View {
         {
             while($row = $giveJobArr->fetch_assoc())
             {
-                echo '          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                echo '          <a href="viewad.php?id='.$row['id'].'" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">'.$row['title'].'</h5>
               <small>Galioja iki '.$row['valid_till'].'</small>
@@ -271,7 +271,7 @@ class View {
         {
             while($row = $searchJobArr->fetch_assoc())
             {
-                echo '          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                echo '          <a href="viewad.php?id='.$row['id'].'" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">';
 
                 if($_SESSION['role'] >= 2)
@@ -302,7 +302,7 @@ class View {
         {
             while($row = $giveJobArr->fetch_assoc())
             {
-                echo '          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                echo '          <a href="viewad.php?id='.$row['id'].'" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">';
 
                 if($_SESSION['role'] >= 2)

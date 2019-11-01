@@ -295,4 +295,17 @@ class Controller {
             }
         }
     }
+
+    public function printViewAdContent()
+    {
+        if(isset($_GET['id']))
+        {
+            echo "viskas ok";
+        }
+        else
+        {
+            $this->view->printDanger("Įvyko klaida. ID nenurodytas. Būsite tuoj perkelti į pagrindinį skelbimų puslapį.");
+            $this->redirect_to_another_page("ads.php", 2);
+        }
+    }
 }
