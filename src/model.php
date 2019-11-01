@@ -277,4 +277,14 @@ class Model {
         return $result;
     }
 
+    public function getCommentsById($id)
+    {
+        $id = $this->secureInput($id);
+        $sql = "SELECT * FROM `ad_comments`
+                JOIN users ON users.id = ad_comments.fk_user
+                WHERE fk_ad='$id'";
+        $result = $this->conn->query($sql);
+        return $result;
+    }
+
 }

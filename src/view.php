@@ -384,4 +384,41 @@ class View {
             ';
         }
     }
+
+    function printAdCommentForm()
+    {
+        echo '<form method="POST">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Jūsų vartotojo vardas</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" value="'.$_SESSION['username'].'" disabled>
+              </div>
+
+
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Komentaras</label>
+                <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+              <button name="comment_btn" class="btn btn-primary">Komentuoti</button>
+            </form>';
+    }
+
+    function printAdComment($commentArr)
+    {
+        if ($commentArr->num_rows > 0)
+        {
+            while($row = $commentArr->fetch_assoc())
+            {
+                echo '<div class="list-group" style="margin-bottom: 20px">
+                      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h5 class="mb-1">'.$row['first_name'].' '.$row['last_name'].'</h5>
+                          <small class="text-muted">'.$row['date'].'</small>
+                        </div>
+                        <p class="mb-1">'.$row['text'].'</p>
+                        <small class="text-muted">'.$row['email'].'</small>
+                      </a>
+                    </div>';
+            }
+        }
+    }
 }

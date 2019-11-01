@@ -310,6 +310,17 @@ class Controller {
                 $this->view->printDanger("Toks skelbimas su tokiu ID neegzistuoja. Būsite tuoj perkelti į pagrindinį skelbimų puslapį.");
                 $this->redirect_to_another_page("ads.php", 2);
             }
+
+            $commentArr = $this->model->getCommentsById($_GET['id']);
+            $this->view->printAdComment($commentArr);
+            if($_SESSION['id'] != 0)
+            {
+                $this->view->printAdCommentForm();
+                if(isset($_POST['comment_btn']))
+                {
+                    echo "paspausta".$_POST['comment'];
+                }
+            }
         }
         else
         {
