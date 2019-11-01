@@ -256,4 +256,25 @@ class Model {
         $this->conn->query($sql);
     }
 
+    public function checkIfAdExistsById($id)
+    {
+        $id = $this->secureInput($id);
+        $sql = "SELECT * FROM ads WHERE id='$id' AND hidden='0'";
+        $result = $this->conn->query($sql);
+        if ($result->num_rows > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public function getAdContentById($id)
+    {
+        $id = $this->secureInput($id);
+        $sql = "SELECT * FROM ads WHERE id='$id'";
+        $result = $this->conn->query($sql);
+
+        return $result;
+    }
+
 }

@@ -300,7 +300,16 @@ class Controller {
     {
         if(isset($_GET['id']))
         {
-            echo "viskas ok";
+            if($this->model->checkIfAdExistsById($_GET['id']))
+            {
+                $adContentArr = $this->model->getAdContentById($_GET['id']);
+                $this->view->printOneAd($adContentArr);
+            }
+            else
+            {
+                $this->view->printDanger("Toks skelbimas su tokiu ID neegzistuoja. Būsite tuoj perkelti į pagrindinį skelbimų puslapį.");
+                $this->redirect_to_another_page("ads.php", 2);
+            }
         }
         else
         {

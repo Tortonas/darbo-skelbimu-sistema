@@ -342,4 +342,46 @@ class View {
           <button type="submit" name="delete_btn" class="btn btn-danger">Ištrinti</button>
       </form>';
     }
+
+    function printOneAd($adArr)
+    {
+        while($row = $adArr->fetch_assoc())
+        {
+            //Title, description, full text, salary, valid_till, tipas
+            $type = null;
+            if($row['type'] == 1)
+                $type = "Ieškau darbo";
+            else
+                $type = "Siūlau darbą";
+
+            $title = $row['title'];
+            $description = $row['description'];
+            $text = $row['text'];
+            $valid_till = $row['valid_till'];
+            $salary = $row['salary'];
+            echo '<div class="main-content--small-margin">
+                      <dl class="row">
+                      <dt class="col-sm-3">Skelbimo tipas</dt>
+                      <dd class="col-sm-9">'.$type.'</dd>
+                    
+                      <dt class="col-sm-3">Pranešėjas</dt>
+                      <dd class="col-sm-9">'.$title.'</dd>
+                      
+                      <dt class="col-sm-3">Santrauka</dt>
+                      <dd class="col-sm-9">'.$description.'</dd>
+                    
+                      <dt class="col-sm-3">Pilnas skelbimas</dt>
+                      <dd class="col-sm-9">
+                        <p>'.$text.'</p>
+                      </dd>
+                    
+                      <dt class="col-sm-3">Alga</dt>
+                      <dd class="col-sm-9">'.$salary.' eur</dd>
+
+                      <dt class="col-sm-3">Skelbimas aktyvus iki</dt>
+                      <dd class="col-sm-9">'.$valid_till.'</dd>
+                </div>
+            ';
+        }
+    }
 }
