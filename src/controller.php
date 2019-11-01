@@ -318,7 +318,16 @@ class Controller {
                 $this->view->printAdCommentForm();
                 if(isset($_POST['comment_btn']))
                 {
-                    echo "paspausta".$_POST['comment'];
+                    if(!empty($_POST['comment']))
+                    {
+                        $this->model->createNewAdComment($_POST['comment'], $_SESSION['id'], $_GET['id']);
+                        $this->view->printSuccess("Komentaras paskelbtas!");
+                        $this->redirect_to_another_page("viewad.php?id=".$_GET['id'],1);
+                    }
+                    else
+                    {
+                        $this->view->printDanger("Komenataro laukas tuščias!");
+                    }
                 }
             }
         }

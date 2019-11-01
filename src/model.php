@@ -287,4 +287,16 @@ class Model {
         return $result;
     }
 
+    public function createNewAdComment($commentText, $userId, $adId)
+    {
+        //text fk_ad fk_user date
+        $commentText = $this->secureInput($commentText);
+        $userId = $this->secureInput($userId);
+        $adId = $this->secureInput($adId);
+        $currentDate = date('Y-m-d');
+        $sql = "INSERT INTO ad_comments (text, fk_ad, fk_user, date) VALUES ('$commentText', '$adId', '$userId', '$currentDate')";
+
+        $this->conn->query($sql);
+    }
+
 }

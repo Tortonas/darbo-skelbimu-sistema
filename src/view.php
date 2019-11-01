@@ -406,6 +406,7 @@ class View {
     {
         if ($commentArr->num_rows > 0)
         {
+            echo '<h3>Komentarai</h3>';
             while($row = $commentArr->fetch_assoc())
             {
                 echo '<div class="list-group" style="margin-bottom: 20px">
