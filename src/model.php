@@ -205,7 +205,7 @@ class Model {
     public function getSearchJobList($id)
     {
         $id = $this->secureInput($id);
-        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='1' AND hidden='0'";
+        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='1' AND hidden='0' AND valid_till>=NOW()";
         $result = $this->conn->query($sql);
 
         return $result;
@@ -214,7 +214,7 @@ class Model {
     public function getGivingJobList($id)
     {
         $id = $this->secureInput($id);
-        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='2' AND hidden='0'";
+        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='2' AND hidden='0' AND valid_till>=NOW()";
         $result = $this->conn->query($sql);
 
         return $result;
@@ -222,7 +222,7 @@ class Model {
 
     public function getSearchJobListGlobal()
     {
-        $sql = "SELECT * FROM ads WHERE type='1' AND hidden='0'";
+        $sql = "SELECT * FROM ads WHERE type='1' AND hidden='0' AND valid_till>=NOW()";
         $result = $this->conn->query($sql);
 
         return $result;
@@ -230,7 +230,7 @@ class Model {
 
     public function getGivingJobListGlobal()
     {
-        $sql = "SELECT * FROM ads WHERE type='2' AND hidden='0'";
+        $sql = "SELECT * FROM ads WHERE type='2' AND hidden='0' AND valid_till>=NOW()";
         $result = $this->conn->query($sql);
 
         return $result;
@@ -259,7 +259,7 @@ class Model {
     public function checkIfAdExistsById($id)
     {
         $id = $this->secureInput($id);
-        $sql = "SELECT * FROM ads WHERE id='$id' AND hidden='0'";
+        $sql = "SELECT * FROM ads WHERE id='$id' AND hidden='0' AND valid_till>=NOW()";
         $result = $this->conn->query($sql);
         if ($result->num_rows > 0)
         {
