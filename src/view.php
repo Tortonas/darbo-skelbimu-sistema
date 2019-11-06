@@ -60,24 +60,44 @@ class View {
 
     function printRegisterForm()
     {
+    	//value="'.$username.'"
+    	if(isset($_POST['username']))
+    		$username = htmlentities($_POST["username"]);
+    	else
+    		$username = "";
+
+    	if(isset($_POST['email']))
+    		$email = htmlentities($_POST["email"]);
+    	else
+    		$email = "";
+
+    	if(isset($_POST['first_name']))
+    		$first_name = htmlentities($_POST["first_name"]);
+    	else
+    		$first_name = "";
+
+    	if(isset($_POST['last_name']))
+    		$last_name = htmlentities($_POST["last_name"]);
+    	else
+    		$last_name = "";
         echo '
               <div class="main-content--small-margin">
         <form method="POST">
           <div class="form-group">
               <label for="inputEmail">Naudotojo vardas</label>
-              <input name="username" type="text" class="form-control" id="inputEmail" placeholder="Naudotojo vardas">
+              <input name="username" type="text" class="form-control" id="inputEmail" placeholder="Naudotojo vardas" value="'.$username.'">
           </div>
           <div class="form-group">
               <label for="inputEmail">Elektroninis paštas</label>
-              <input name="email" type="text" class="form-control" id="inputEmail" placeholder="El. Paštas">
+              <input name="email" type="text" class="form-control" id="inputEmail" placeholder="El. Paštas" value="'.$email.'">
           </div>
           <div class="form-group">
               <label for="inputEmail">Vardas</label>
-              <input name="first_name" type="text" class="form-control" id="inputEmail" placeholder="Vardas">
+              <input name="first_name" type="text" class="form-control" id="inputEmail" placeholder="Vardas" value="'.$first_name.'">
           </div>
           <div class="form-group">
               <label for="inputEmail">Pavardė</label>
-              <input name="last_name" type="text" class="form-control" id="inputEmail" placeholder="Pavardė">
+              <input name="last_name" type="text" class="form-control" id="inputEmail" placeholder="Pavardė" value="'.$last_name.'">
           </div>
           <div class="form-group">
               <label for="inputPassword">Slaptažodis</label>
@@ -95,11 +115,16 @@ class View {
 
     function printLoginForm()
     {
+    	//value="'.$username.'"
+    	if(isset($_POST['username']))
+    		$username = htmlentities($_POST["username"]);
+    	else
+    		$username = "";
         echo '      <div class="main-content--small-margin">
         <form method="POST">
           <div class="form-group">
               <label for="inputEmail">Naudotojo vardas</label>
-              <input type="text" class="form-control" id="inputEmail" name="username" placeholder="Naudotojo vardas">
+              <input type="text" class="form-control" id="inputEmail" name="username" placeholder="Naudotojo vardas" value="'.$username.'">
           </div>
           <div class="form-group">
               <label for="inputPassword">Slaptažodis</label>
@@ -230,10 +255,36 @@ class View {
     {
         //title, short description, text, salary, validtill, type
 
+		//value="'.$username.'"
+    	if(isset($_POST['title']))
+    		$title = htmlentities($_POST["title"]);
+    	else
+    		$title = "";
+
+    	if(isset($_POST['description']))
+    		$description = htmlentities($_POST["description"]);
+    	else
+    		$description = "";
+
+    	if(isset($_POST['text']))
+    		$text = htmlentities($_POST["text"]);
+    	else
+    		$text = "";
+
+    	if(isset($_POST['salary']))
+    		$salary = htmlentities($_POST["salary"]);
+    	else
+    		$salary = "";
+
+    	if(isset($_POST['valid_till']))
+    		$valid_till = htmlentities($_POST["valid_till"]);
+    	else
+    		$valid_till = "";
+
         echo '<form method="POST" class="main-content--small-margin">
               <div class="form-group">
                 <label for="exampleFormControlInput1">Vardas pavardė arba firmos pavadinimas</label>
-                <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Petras Petraitis arba UAB `UAB` ">
+                <input type="text" name="title" class="form-control" id="exampleFormControlInput1" placeholder="Petras Petraitis arba UAB `UAB` " value="'.$title.'">
               </div>
               <div class="form-group">
                 <label for="exampleFormControlSelect1">Skelbimo tipas</label>
@@ -244,19 +295,19 @@ class View {
               </div>
               <div class="form-group">
                 <label for="exampleFormControlInput1">Trumpas pristatymas</label>
-                <input name="description" type="text" class="form-control" id="exampleFormControlInput1" placeholder="UAB `UAB` ieško darbuotojų. ">
+                <input name="description" type="text" class="form-control" id="exampleFormControlInput1" placeholder="UAB `UAB` ieško darbuotojų. " value="'.$description.'">
               </div>
               <div class="form-group">
                 <label for="exampleFormControlTextarea1">Pilnas skelbimo tekstas</label>
-                <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3" >'.$text.'</textarea>
               </div>
               <div class="form-group">
                 <label for="exampleFormControlInput1">Alga</label>
-                <input name="salary" type="text" class="form-control" id="exampleFormControlInput1" placeholder="555">
+                <input name="salary" type="text" class="form-control" id="exampleFormControlInput1" placeholder="555" value="'.$salary.'">
               </div>
               <div class="form-group">
                 <label for="exampleFormControlInput1">Iki kada galios skelbimas</label>
-                <input name="valid_till" type="text" class="form-control" id="exampleFormControlInput1" placeholder="2019-12-01">
+                <input name="valid_till" type="text" class="form-control" id="exampleFormControlInput1" placeholder="2019-12-01" value="'.$valid_till.'">
               </div>
               <button type="submit" name="createad_btn" class="btn btn-primary">Sukurti naują skelbimą</button>
             </form>';
