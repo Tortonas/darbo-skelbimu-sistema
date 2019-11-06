@@ -83,6 +83,12 @@ class Controller {
                 $canIRegister = false;
             }
 
+            if($this->model->canIRegisterThisName($_POST['username']))
+            {
+                $this->view->printDanger("Naudotojo vardas užimtas!");
+                $canIRegister = false;
+            }
+
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
             if($canIRegister)

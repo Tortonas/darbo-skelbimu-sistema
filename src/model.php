@@ -173,6 +173,22 @@ class Model {
         return $result;
     }
 
+    public function canIRegisterThisName($username)
+    {
+    	$username = $this->secureInput($username);
+        $sql = "SELECT * FROM users WHERE username='$username'";
+        $result = $this->conn->query($sql);
+
+        if ($result->num_rows == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     public function changeUserVerification($username)
     {
         $username = $this->secureInput($username);
