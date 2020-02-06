@@ -117,8 +117,13 @@ class Model {
         $password = $this->secureInput($password);
         $first_name = $this->secureInput($first_name);
         $last_name = $this->secureInput($last_name);
-        $sql = "INSERT INTO users (username, email, password, first_name, last_name, role, verified) VALUES ('$username', '$email', '$password', '$first_name', '$last_name', '1', '0');";
-        mysqli_query($this->conn, $sql);
+        $role = 1;
+        $verified = 0;
+        $stmt = $this->conn->prepare("INSERT INTO users (username, email, password, first_name, last_name, role, verified) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+        $stmt->bind_param("sssssii", $username, $email, $password, $first_name, $last_name, $role, $verified);
+        $stmt->execute();
     }
 
     public function loginMe($username, $password)
@@ -126,8 +131,10 @@ class Model {
         $username = $this->secureInput($username);
         $password = $this->secureInput($password);
 
-        $sql = "SELECT * FROM users WHERE username='$username'";
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username=?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0)
         {
@@ -168,16 +175,18 @@ class Model {
     public function getUserList()
     {
         $sql = "SELECT * FROM users WHERE role=1";
-        $result = $this->conn->query($sql);
-
-        return $result;
+        return $this->conn->query($sql);
     }
 
     public function canIRegisterThisName($username)
     {
     	$username = $this->secureInput($username);
-        $sql = "SELECT * FROM users WHERE username='$username'";
-        $result = $this->conn->query($sql);
+
+    	$stmt = $this->conn->prepare("SELECT * FROM users WHERE username=?");
+    	$stmt->bind_param('s', $username);
+    	$stmt->execute();
+
+        $result = $stmt->get_result();
 
         if ($result->num_rows == 0)
         {
@@ -192,8 +201,10 @@ class Model {
     public function changeUserVerification($username)
     {
         $username = $this->secureInput($username);
-        $sql = "SELECT * FROM users WHERE username='$username'";
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username=?");
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0)
         {
@@ -201,13 +212,15 @@ class Model {
             {
                 if($row['verified'] == 0)
                 {
-                    $sqlUpdate = "UPDATE users SET verified='1' WHERE username='$username'";
-                    $this->conn->query($sqlUpdate);
+                    $stmt = $this->conn->prepare("UPDATE users SET verified='1' WHERE username=?");
+                    $stmt->bind_param('s', $username);
+                    $stmt->execute();
                 }
                 else
                 {
-                    $sqlUpdate = "UPDATE users SET verified='0' WHERE username='$username'";
-                    $this->conn->query($sqlUpdate);
+                    $stmt = $this->conn->prepare("UPDATE users SET verified='0' WHERE username=?");
+                    $stmt->bind_param('s', $username);
+                    $stmt->execute();
                 }
                 return true;
             }
@@ -220,36 +233,34 @@ class Model {
 
     public function getSearchJobList($id)
     {
-        $id = $this->secureInput($id);
-        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='1' AND hidden='0' AND valid_till>=NOW()";
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare("SELECT * FROM ads WHERE fk_user=? AND type='1' AND hidden='0' AND valid_till>=NOW()");
+        $stmt->bind_param("i", $id);
+        $id = $this->secureInput($id);;
+        $stmt->execute();
 
-        return $result;
+        return $stmt->get_result();
     }
 
     public function getGivingJobList($id)
     {
+        $stmt = $this->conn->prepare("SELECT * FROM ads WHERE fk_user=? AND type='2' AND hidden='0' AND valid_till>=NOW()");
+        $stmt->bind_param("i", $id);
         $id = $this->secureInput($id);
-        $sql = "SELECT * FROM ads WHERE fk_user='$id' AND type='2' AND hidden='0' AND valid_till>=NOW()";
-        $result = $this->conn->query($sql);
+        $stmt->execute();
 
-        return $result;
+        return $stmt->get_result();
     }
 
     public function getSearchJobListGlobal()
     {
         $sql = "SELECT * FROM ads WHERE type='1' AND hidden='0' AND valid_till>=NOW()";
-        $result = $this->conn->query($sql);
-
-        return $result;
+        return $this->conn->query($sql);
     }
 
     public function getGivingJobListGlobal()
     {
         $sql = "SELECT * FROM ads WHERE type='2' AND hidden='0' AND valid_till>=NOW()";
-        $result = $this->conn->query($sql);
-
-        return $result;
+        return $this->conn->query($sql);
     }
 
     public function createNewAd($title, $type, $description, $text, $salary, $valid_till, $user_id)
@@ -260,23 +271,34 @@ class Model {
         $text = $this->secureInput($text);
         $salary = $this->secureInput($salary);
         $valid_till = $this->secureInput($valid_till);
+        $hidden = 0;
 
-        $sql = "INSERT INTO ads (title, type, description, text, salary, valid_till, fk_user) VALUES ('$title', '$type', '$description', '$text', '$salary', '$valid_till', '$user_id')";
-        return $this->conn->query($sql);
+        $stmt = $this->conn->prepare("INSERT INTO ads 
+            (title, type, description, text, salary, valid_till, fk_user, hidden) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sissisii", $title, $type, $description, $text, $salary, $valid_till, $user_id, $hidden);
+
+        return $stmt->execute();
     }
 
     public function hideAd($id)
     {
         $id = $this->secureInput($id);
-        $sql = "UPDATE ads SET hidden='1' WHERE id='$id'";
-        $this->conn->query($sql);
+
+        $stmt = $this->conn->prepare("UPDATE ads SET hidden='1' WHERE id=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
     }
 
     public function checkIfAdExistsById($id)
     {
         $id = $this->secureInput($id);
-        $sql = "SELECT * FROM ads WHERE id='$id' AND hidden='0' AND valid_till>=NOW()";
-        $result = $this->conn->query($sql);
+
+        $stmt = $this->conn->prepare("SELECT * FROM ads WHERE id=? AND hidden='0' AND valid_till>=NOW()");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
         if ($result->num_rows > 0)
         {
             return true;
@@ -287,38 +309,45 @@ class Model {
     public function getAdContentById($id)
     {
         $id = $this->secureInput($id);
-        $sql = "SELECT * FROM ads WHERE id='$id'";
-        $result = $this->conn->query($sql);
 
-        return $result;
+        $stmt = $this->conn->prepare("SELECT * FROM ads WHERE id=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        return $stmt->get_result();
     }
 
     public function getCommentsById($id)
     {
         $id = $this->secureInput($id);
-        $sql = "SELECT * FROM `ad_comments`
+        $stmt = $this->conn->prepare("SELECT * FROM `ad_comments`
                 JOIN users ON users.id = ad_comments.fk_user
-                WHERE fk_ad='$id'";
-        $result = $this->conn->query($sql);
-        return $result;
+                WHERE fk_ad=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        return $stmt->get_result();
     }
 
     public function createNewAdComment($commentText, $userId, $adId)
     {
-        //text fk_ad fk_user date
         $commentText = $this->secureInput($commentText);
         $userId = $this->secureInput($userId);
         $adId = $this->secureInput($adId);
         $currentDate = date('Y-m-d');
-        $sql = "INSERT INTO ad_comments (text, fk_ad, fk_user, date) VALUES ('$commentText', '$adId', '$userId', '$currentDate')";
 
-        $this->conn->query($sql);
+        $stmt = $this->conn->prepare("INSERT INTO ad_comments (text, fk_ad, fk_user, date) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("siis", $commentText, $adId, $userId, $currentDate);
+        $stmt->execute();
     }
 
     public function getCountOfAdVisits($adId)
     {
-        $sql = "SELECT * FROM ad_views WHERE fk_ad='$adId'";
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare("SELECT * FROM ad_views WHERE fk_ad=?");
+        $stmt->bind_param("i", $adId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
         return $result->num_rows;
     }
 
@@ -326,8 +355,12 @@ class Model {
     {
         $userId = $this->secureInput($userId);
         $adId = $this->secureInput($adId);
-        $sql = "SELECT * FROM ad_views WHERE fk_ad='$adId' AND fk_user='$userId'";
-        $result = $this->conn->query($sql);
+
+        $stmt = $this->conn->prepare("SELECT * FROM ad_views WHERE fk_ad=? AND fk_user=?");
+        $stmt->bind_param("ii", $adId, $userId);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0)
         {
@@ -341,7 +374,8 @@ class Model {
 
     public function viewThisAd($userId, $adId)
     {
-        $sql = "INSERT INTO ad_views (fk_ad, fk_user) VALUES ('$adId', '$userId')";
-        $this->conn->query($sql);
+        $stmt = $this->conn->prepare("INSERT INTO ad_views (fk_ad, fk_user) VALUES (?, ?)");
+        $stmt->bind_param("ii", $adId, $userId);
+        $stmt->execute();
     }
 }
