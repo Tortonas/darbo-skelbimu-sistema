@@ -156,14 +156,16 @@ class View {
             // output data of each row
             while($row = $array->fetch_assoc())
             {
+                echo '<form method="POST">';
                 if($row['verified'] == "0")
                 {
-                    echo '<li class="list-group-item d-flex justify-content-between align-items-center">'.$row['username'].'<span class="badge badge-danger badge-pill">Nepatvirtintas</span></li>';
+                    echo '<li class="list-group-item d-flex justify-content-between align-items-center">'.$row['username'].'<button name="changeRole" value="'.$row['username'].'" class="btn btn-danger btn-sm">Nepatvirtintas</button></li>';
                 }
                 else
                 {
-                    echo '<li class="list-group-item d-flex justify-content-between align-items-center">'.$row['username'].'<span class="badge badge-primary badge-pill">Patvirtintas</span></li>';
+                    echo '<li class="list-group-item d-flex justify-content-between align-items-center">'.$row['username'].'<button name="changeRole" value="'.$row['username'].'" class="btn btn-primary btn-sm">Patvirtintas</button></li>';
                 }
+                echo '</form>';
             }
         }
         else

@@ -174,7 +174,12 @@ class Controller {
     {
         $userList = $this->model->getUserList();
         $this->view->printUsersPage($userList);
-        $this->view->printUsersPageDeleteForm();
+
+        if(isset($_POST['changeRole']))
+        {
+            $this->model->changeUserVerification($_POST['changeRole']);
+            $this->redirect_to_another_page('/users.php', 0);
+        }
     }
 
     public function handleUsersPageButton()
