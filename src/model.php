@@ -117,8 +117,13 @@ class Model {
         $password = $this->secureInput($password);
         $first_name = $this->secureInput($first_name);
         $last_name = $this->secureInput($last_name);
-        $sql = "INSERT INTO users (username, email, password, first_name, last_name, role, verified) VALUES ('$username', '$email', '$password', '$first_name', '$last_name', '1', '0');";
-        mysqli_query($this->conn, $sql);
+        $role = 1;
+        $verified = 0;
+        $stmt = $this->conn->prepare("INSERT INTO users (username, email, password, first_name, last_name, role, verified) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+        $stmt->bind_param("sssssii", $username, $email, $password, $first_name, $last_name, $role, $verified);
+        $stmt->execute();
     }
 
     public function loginMe($username, $password)
@@ -126,8 +131,10 @@ class Model {
         $username = $this->secureInput($username);
         $password = $this->secureInput($password);
 
-        $sql = "SELECT * FROM users WHERE username='$username'";
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username=?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0)
         {
@@ -168,16 +175,18 @@ class Model {
     public function getUserList()
     {
         $sql = "SELECT * FROM users WHERE role=1";
-        $result = $this->conn->query($sql);
-
-        return $result;
+        return $this->conn->query($sql);
     }
 
     public function canIRegisterThisName($username)
     {
     	$username = $this->secureInput($username);
-        $sql = "SELECT * FROM users WHERE username='$username'";
-        $result = $this->conn->query($sql);
+
+    	$stmt = $this->conn->prepare("SELECT * FROM users WHERE username=?");
+    	$stmt->bind_param('s', $username);
+    	$stmt->execute();
+
+        $result = $stmt->get_result();
 
         if ($result->num_rows == 0)
         {
@@ -192,8 +201,10 @@ class Model {
     public function changeUserVerification($username)
     {
         $username = $this->secureInput($username);
-        $sql = "SELECT * FROM users WHERE username='$username'";
-        $result = $this->conn->query($sql);
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username=?");
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
         if ($result->num_rows > 0)
         {
@@ -201,13 +212,15 @@ class Model {
             {
                 if($row['verified'] == 0)
                 {
-                    $sqlUpdate = "UPDATE users SET verified='1' WHERE username='$username'";
-                    $this->conn->query($sqlUpdate);
+                    $stmt = $this->conn->prepare("UPDATE users SET verified='1' WHERE username=?");
+                    $stmt->bind_param('s', $username);
+                    $stmt->execute();
                 }
                 else
                 {
-                    $sqlUpdate = "UPDATE users SET verified='0' WHERE username='$username'";
-                    $this->conn->query($sqlUpdate);
+                    $stmt = $this->conn->prepare("UPDATE users SET verified='0' WHERE username=?");
+                    $stmt->bind_param('s', $username);
+                    $stmt->execute();
                 }
                 return true;
             }
@@ -241,17 +254,13 @@ class Model {
     public function getSearchJobListGlobal()
     {
         $sql = "SELECT * FROM ads WHERE type='1' AND hidden='0' AND valid_till>=NOW()";
-        $result = $this->conn->query($sql);
-
-        return $result;
+        return $this->conn->query($sql);
     }
 
     public function getGivingJobListGlobal()
     {
         $sql = "SELECT * FROM ads WHERE type='2' AND hidden='0' AND valid_till>=NOW()";
-        $result = $this->conn->query($sql);
-
-        return $result;
+        return $this->conn->query($sql);
     }
 
     public function createNewAd($title, $type, $description, $text, $salary, $valid_till, $user_id)
@@ -262,13 +271,13 @@ class Model {
         $text = $this->secureInput($text);
         $salary = $this->secureInput($salary);
         $valid_till = $this->secureInput($valid_till);
+        $hidden = 0;
 
-        $stmt = $this->conn->prepare("INSERT INTO ads (title, type, description, text, salary, valid_till, fk_user) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)");
-        var_dump($this->conn->error);
-        var_dump($stmt->error);
-        $stmt->bind_param("sissisi", $title, $type, $description, $text, $salary, $valid_till, $user_id);
-        var_dump($stmt->error);
+        $stmt = $this->conn->prepare("INSERT INTO ads 
+            (title, type, description, text, salary, valid_till, fk_user, hidden) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sissisii", $title, $type, $description, $text, $salary, $valid_till, $user_id, $hidden);
+
         return $stmt->execute();
     }
 
