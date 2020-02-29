@@ -1,8 +1,8 @@
-# Darbo skelbimų sistema
+# Job ads website
+![github-large](readme.gif)
+This project was done in one of the Kaunas technology university module. This is a minimal viable product of job ads website.
 
-Šis projektas buvo daromas KTU viename iš modulių. Tai yra MVP versija darbo skelbimų sistemos.
-
-# Kokias žinias patobulinau
+# Where I Improved
 
 1. PHP OOP
 2. MVC
